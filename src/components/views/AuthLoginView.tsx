@@ -292,7 +292,7 @@ export const AuthLoginView: React.FC<AuthLoginViewProps> = ({ onLoginSuccess, on
             <div className="flex flex-col gap-1">
               <h2 className="text-2xl font-black text-[#191c1e] tracking-tight">Check Your Email</h2>
               <p className="text-xs text-[#434654] leading-relaxed">
-                We've sent a verification link to{' '}
+                We&apos;ve sent a verification link to{' '}
                 <span className="font-bold text-[#003d9b]">{registeredEmail}</span>.
               </p>
             </div>

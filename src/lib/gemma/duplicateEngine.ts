@@ -55,7 +55,7 @@ function getHexSHA256(buf: Buffer): string {
   try {
     // Node.js environment check
     if (typeof process !== 'undefined' && process.versions && process.versions.node) {
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      // eslint-disable-next-line
       const nodeCrypto = require('crypto');
       return nodeCrypto.createHash('sha256').update(buf).digest('hex');
     }

@@ -134,7 +134,7 @@ export default function RegisterPage() {
             <div className="flex flex-col gap-1">
               <h2 className="text-2xl font-black text-on-surface tracking-tight">Check Your Email</h2>
               <p className="text-xs text-on-surface-variant leading-relaxed">
-                We've sent a confirmation link to{' '}
+                We&apos;ve sent a confirmation link to{' '}
                 <span className="font-bold text-primary">{registeredEmail}</span>.
               </p>
             </div>
