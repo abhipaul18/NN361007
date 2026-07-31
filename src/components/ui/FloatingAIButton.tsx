@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, X, Send, Bot, ChevronRight, Zap } from 'lucide-react';
+import { askGemmaAssistant } from '@/src/lib/openrouter';
 
 export function FloatingAIButton() {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,10 +16,21 @@ export function FloatingAIButton() {
     },
   ]);
   const [isTyping, setIsTyping] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const handleSendMessage = (textToSend?: string) => {
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    if (isOpen) {
+      scrollToBottom();
+    }
+  }, [messages, isTyping, isOpen]);
+
+  const handleSendMessage = async (textToSend?: string) => {
     const text = textToSend || inputMessage;
-    if (!text.trim()) return;
+    if (!text.trim() || isTyping) return;
 
     const userMsg = {
       sender: 'user' as const,
@@ -26,33 +38,42 @@ export function FloatingAIButton() {
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     };
 
-    setMessages((prev) => [...prev, userMsg]);
+    const newMessages = [...messages, userMsg];
+    setMessages(newMessages);
     if (!textToSend) setInputMessage('');
     setIsTyping(true);
 
-    // Simulate Gemma AI response
-    setTimeout(() => {
-      let gemmaReply = "I've logged your query! Gemma AI Vision and verified location mapping are ready to analyze photo evidence or guide you to local volunteer missions.";
-      
-      const lower = text.toLowerCase();
-      if (lower.includes('tree') || lower.includes('plant')) {
-        gemmaReply = "🌱 Great initiative! We have active urban reforestation drives in Karnataka (8,420 trees planted) and Maharashtra. Submit a sapling photo for +50 instant Karma!";
-      } else if (lower.includes('pothole') || lower.includes('report')) {
-        gemmaReply = "🚨 To report a pothole or civic hazard, click 'Report Issue' in your dashboard. Upload a photo, and Gemma AI Vision will automatically route it to the PWD department within 30 seconds.";
-      } else if (lower.includes('karma') || lower.includes('reward')) {
-        gemmaReply = "🏆 You earn Karma by completing verified good deeds. Karma points can be redeemed for local coffee vouchers, public transport passes, or eco-badges!";
-      }
+    try {
+      const history = messages
+        .filter((m) => m.sender === 'user' || m.sender === 'gemma')
+        .map((m) => ({
+          role: m.sender === 'user' ? ('user' as const) : ('assistant' as const),
+          content: m.text,
+        }));
+
+      const reply = await askGemmaAssistant(text, history);
 
       setMessages((prev) => [
         ...prev,
         {
           sender: 'gemma',
-          text: gemmaReply,
+          text: reply,
           time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         },
       ]);
+    } catch (err) {
+      console.error('[Gemma AI Bot] Error generating response:', err);
+      setMessages((prev) => [
+        ...prev,
+        {
+          sender: 'gemma',
+          text: "I am Gemma, KINDRA's AI Civic Assistant. I can help you with reporting civic issues, participating in volunteer events, earning Karma Points, or redeeming rewards. What would you like to explore on KINDRA today?",
+          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        },
+      ]);
+    } finally {
       setIsTyping(false);
-    }, 1000);
+    }
   };
 
   return (
@@ -175,6 +196,7 @@ export function FloatingAIButton() {
                   <span className="w-1.5 h-1.5 rounded-full bg-primary animate-bounce [animation-delay:0.4s]" />
                 </div>
               )}
+              <div ref={messagesEndRef} />
             </div>
 
             {/* Input Footer */}

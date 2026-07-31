@@ -16,6 +16,7 @@ export default function CitizenLayout({ children }: { children: React.ReactNode 
   const navItems = [
     { label: 'Dashboard', path: '/citizen/dashboard', icon: 'dashboard' },
     { label: 'Report Issue', path: '/citizen/report', icon: 'report_problem' },
+    { label: 'Ask Gemma AI', path: '/citizen/gemma', icon: 'smart_toy' },
     { label: 'Leaderboard', path: '/citizen/leaderboard', icon: 'leaderboard' },
     { label: 'Civic Campaigns', path: '/citizen/campaigns', icon: 'campaign' },
     { label: 'My Credentials', path: '/citizen/credentials', icon: 'military_tech' },
