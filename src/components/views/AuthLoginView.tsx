@@ -19,6 +19,8 @@ export const AuthLoginView: React.FC<AuthLoginViewProps> = ({ onLoginSuccess, on
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [selectedLang, setSelectedLang] = useState('English');
   const [isLangOpen, setIsLangOpen] = useState(false);
+  const [showVerificationModal, setShowVerificationModal] = useState(false);
+  const [registeredEmail, setRegisteredEmail] = useState('');
 
   const handleContinue = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,6 +37,9 @@ export const AuthLoginView: React.FC<AuthLoginViewProps> = ({ onLoginSuccess, on
 
       if (authMode === 'signup' && register) {
         await register(email, password, fullName);
+        setRegisteredEmail(email);
+        setShowVerificationModal(true);
+        return;
       } else if (login) {
         await login(email, password);
       }
@@ -264,6 +269,60 @@ export const AuthLoginView: React.FC<AuthLoginViewProps> = ({ onLoginSuccess, on
           </div>
         </div>
       </main>
+
+      {/* Email Verification Dialog Modal */}
+      {showVerificationModal && (
+        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-300">
+          <div className="bg-white border border-[#edeef0] rounded-3xl p-6 md:p-8 max-w-md w-full shadow-2xl flex flex-col items-center text-center gap-4 animate-in zoom-in-95 duration-300 relative">
+            <button
+              onClick={() => {
+                setShowVerificationModal(false);
+                setAuthMode('login');
+              }}
+              className="absolute top-4 right-4 p-1.5 rounded-full hover:bg-gray-100 text-[#434654] transition-colors"
+            >
+              <span className="material-symbols-outlined text-xl">close</span>
+            </button>
+
+            {/* Icon Badge */}
+            <div className="w-16 h-16 rounded-2xl bg-[#003d9b]/10 border-2 border-[#003d9b]/20 text-[#003d9b] flex items-center justify-center shadow-md">
+              <span className="material-symbols-outlined text-3xl">mark_email_read</span>
+            </div>
+
+            <div className="flex flex-col gap-1">
+              <h2 className="text-2xl font-black text-[#191c1e] tracking-tight">Check Your Email</h2>
+              <p className="text-xs text-[#434654] leading-relaxed">
+                We've sent a verification link to{' '}
+                <span className="font-bold text-[#003d9b]">{registeredEmail}</span>.
+              </p>
+            </div>
+
+            <div className="bg-[#003d9b]/5 border border-[#003d9b]/20 p-4 rounded-2xl text-xs text-[#434654] text-left flex items-start gap-3 w-full">
+              <span className="material-symbols-outlined text-[#003d9b] text-xl shrink-0 mt-0.5">mail</span>
+              <div className="flex flex-col gap-1">
+                <span className="font-bold text-[#191c1e]">Verification Link Sent</span>
+                <span className="leading-relaxed">
+                  Please check your inbox (and spam folder) and click the link to verify your email address before logging in.
+                </span>
+              </div>
+            </div>
+
+            <div className="flex flex-col w-full gap-2 pt-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setShowVerificationModal(false);
+                  setAuthMode('login');
+                }}
+                className="w-full bg-[#003d9b] hover:bg-[#0052cc] text-white font-bold py-3 rounded-xl text-xs shadow-md transition-colors flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <span>Proceed to Sign In</span>
+                <span className="material-symbols-outlined text-sm">arrow_forward</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
