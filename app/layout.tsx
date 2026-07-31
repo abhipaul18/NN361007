@@ -11,6 +11,14 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "KINDRA — Civic Engagement Platform",
   description: '"Make Kindness Count." 💚 — Gamified Civic Engagement Platform',
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({
