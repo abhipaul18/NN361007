@@ -171,6 +171,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setProfile(null);
       setRole('citizen');
       console.log('[Auth Debug] Logout complete');
+      if (typeof window !== 'undefined') {
+        window.location.href = '/';
+      }
     } catch (err) {
       console.error('[Auth Debug] Logout error:', err);
     } finally {
