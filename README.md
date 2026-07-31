@@ -497,20 +497,6 @@ We welcome contributions from developers, civic tech enthusiasts, and designers!
 
 ---
 
-# License
-
-This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for details.
-
----
-
-# Contact & Community
-
-- **GitHub Repository**: [https://github.com/abhipaul18/Kindra](https://github.com/abhipaul18/Kindra)
-- **Report Bugs & Feature Requests**: [GitHub Issues](https://github.com/abhipaul18/Kindra/issues)
-- **Community Discussions**: [GitHub Discussions](https://github.com/abhipaul18/Kindra/discussions)
-
----
-
 # Run Guide
 
 A step-by-step walkthrough for a completely new developer setting up KINDRA from scratch.
