@@ -475,10 +475,10 @@ export function GoodDeedsDiscovery({ onClaimKarma }: GoodDeedsDiscoveryProps) {
                     <button
                       type="button"
                       onClick={() => handleOpenMissionDetail(mission)}
-                      className={`group relative inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl text-xs font-extrabold transition-all duration-300 shadow-sm cursor-pointer overflow-hidden ${
+                      className={`group relative inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl text-xs font-black transition-all duration-300 shadow-md cursor-pointer overflow-hidden ${
                         isCompleted
-                          ? 'border border-emerald-600/30 bg-emerald-50/90 text-emerald-700 hover:bg-emerald-100 hover:border-emerald-600/50 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-500/40 dark:hover:bg-emerald-900/50 shadow-emerald-500/10'
-                          : 'bg-gradient-to-r from-blue-600 via-blue-600 to-indigo-600 text-white hover:from-blue-500 hover:to-indigo-500 shadow-md shadow-blue-500/25 hover:shadow-lg hover:shadow-blue-500/40 hover:-translate-y-0.5 active:translate-y-0'
+                          ? 'bg-gradient-to-r from-emerald-600 via-emerald-600 to-teal-600 text-white hover:from-emerald-500 hover:to-teal-500 shadow-emerald-600/25 hover:shadow-lg hover:shadow-emerald-600/40 hover:-translate-y-0.5 active:translate-y-0'
+                          : 'bg-gradient-to-r from-blue-600 via-blue-600 to-indigo-600 text-white hover:from-blue-500 hover:to-indigo-500 shadow-blue-500/25 hover:shadow-lg hover:shadow-blue-500/40 hover:-translate-y-0.5 active:translate-y-0'
                       }`}
                     >
                       <Magnetic intensity={0.12} range={140}>
