@@ -367,21 +367,6 @@ KINDRA leverages Google's Gemma 4 26B Vision model to automatically analyze phot
 
 ---
 
-# Google Maps & Location Setup
-
-### Map Implementation Details
-
-KINDRA uses **Leaflet** and **OpenStreetMap** (via `react-leaflet`) for interactive maps. **No Google Maps API key is required.**
-
-### Features Included:
-
-- **Zero-Cost Tile Provider**: Maps render using CartoDB Positron / OpenStreetMap public tile servers.
-- **HTML5 Geolocation API**: Automatically captures citizen latitude, longitude, and accuracy radius when submitting reports.
-- **Spatial Validation**: Haversine distance formula (`calculateHaversineDistance`) computes distance in meters between user location and target mission coordinates.
-- **Dynamic Client Loading**: `LiveMap.tsx` and `LocationPicker.tsx` utilize Next.js `dynamic()` imports to ensure seamless rendering without SSR window errors.
-
----
-
 # Folder Configuration
 
 Where developers should place new code additions:
