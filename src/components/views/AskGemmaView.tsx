@@ -19,7 +19,7 @@ export const AskGemmaView: React.FC = () => {
       id: 'm-1',
       sender: 'gemma',
       text: "Hello! I am Gemma, your Kindra AI assistant. How can I help you today with civic issue reporting, volunteer events, or Karma rewards?",
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      timestamp: 'Just now',
     },
   ]);
 
