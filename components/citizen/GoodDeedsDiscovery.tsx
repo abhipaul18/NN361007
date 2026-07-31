@@ -10,6 +10,7 @@ import { awardMissionKarma } from '@/services/karmaService';
 import { fetchUserCompletedMissions, findMissionByTitle } from '@/services/missionService';
 import KarmaRewardAnimation from '@/components/citizen/KarmaRewardAnimation';
 import type { KarmaRewardResponse } from '@/src/types/database';
+import { Magnetic } from '@/components/core/magnetic';
 
 export interface GoodDeedMission {
   id: string;
@@ -388,19 +389,20 @@ export function GoodDeedsDiscovery({ onClaimKarma }: GoodDeedsDiscoveryProps) {
       </div>
 
       {/* Category Filter Pills */}
-      <div className="flex overflow-x-auto gap-2 pb-1 scrollbar-none">
+      <div className="flex overflow-x-auto gap-2.5 pb-2 pt-1 scrollbar-none">
         {CATEGORIES.map((cat) => (
-          <button
-            key={cat}
-            onClick={() => setSelectedCategory(cat)}
-            className={`whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold border transition-all ${
-              selectedCategory === cat
-                ? 'bg-secondary-container text-on-secondary-container border-secondary/40 shadow-sm scale-105'
-                : 'bg-surface-container-lowest text-on-surface-variant border-outline-variant/30 hover:bg-surface-container-low'
-            }`}
-          >
-            {cat}
-          </button>
+          <Magnetic key={cat} intensity={0.15} range={80}>
+            <button
+              onClick={() => setSelectedCategory(cat)}
+              className={`whitespace-nowrap px-4 py-2 rounded-full text-xs font-bold border transition-all duration-200 cursor-pointer ${
+                selectedCategory === cat
+                  ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white border-transparent shadow-md shadow-blue-500/25 scale-105 font-black'
+                  : 'bg-surface-container-lowest text-on-surface-variant border-outline-variant/30 hover:bg-surface-container-low hover:text-on-surface'
+              }`}
+            >
+              {cat}
+            </button>
+          </Magnetic>
         ))}
       </div>
 
@@ -412,7 +414,7 @@ export function GoodDeedsDiscovery({ onClaimKarma }: GoodDeedsDiscoveryProps) {
             <Card
               key={mission.id}
               hoverable
-              className="flex flex-col border-outline-variant/30 overflow-hidden group transition-all duration-300"
+              className="flex flex-col border-outline-variant/30 overflow-hidden group transition-all duration-300 hover:shadow-xl hover:border-primary/30"
             >
               <div className="relative h-44 w-full overflow-hidden">
                 <img
@@ -420,16 +422,18 @@ export function GoodDeedsDiscovery({ onClaimKarma }: GoodDeedsDiscoveryProps) {
                   alt={mission.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
-                <div className="absolute top-3 left-3 bg-surface/90 backdrop-blur-md px-3 py-1 rounded-full flex items-center gap-1.5 border border-outline-variant/30">
+                <div className="absolute top-3 left-3 bg-surface/90 backdrop-blur-md px-3 py-1 rounded-full flex items-center gap-1.5 border border-outline-variant/30 shadow-sm">
                   <span className="material-symbols-outlined text-xs">{mission.categoryIcon}</span>
                   <span className="text-[11px] font-bold text-on-surface">{mission.category}</span>
                 </div>
 
                 {isCompleted && (
-                  <div className="absolute inset-0 bg-secondary/85 backdrop-blur-xs flex flex-col items-center justify-center text-white font-extrabold text-sm gap-1">
-                    <span className="material-symbols-outlined text-3xl">check_circle</span>
-                    <span>Mission Completed!</span>
-                    <span className="text-xs bg-white/20 px-2.5 py-0.5 rounded-full">+ {mission.xp} Karma Earned</span>
+                  <div className="absolute inset-0 bg-emerald-950/85 backdrop-blur-xs flex flex-col items-center justify-center text-white font-extrabold text-sm gap-1">
+                    <span className="material-symbols-outlined text-3xl text-emerald-400">check_circle</span>
+                    <span className="text-emerald-100 font-black">Mission Completed!</span>
+                    <span className="text-xs bg-emerald-500/30 text-emerald-200 border border-emerald-400/30 px-3 py-1 rounded-full font-bold">
+                      +{mission.xp} Karma Earned
+                    </span>
                   </div>
                 )}
               </div>
@@ -444,24 +448,58 @@ export function GoodDeedsDiscovery({ onClaimKarma }: GoodDeedsDiscoveryProps) {
                   </p>
                 </div>
 
-                <div className="flex items-center justify-between pt-sm border-t border-outline-variant/20 mt-2">
-                  <div className="flex items-center gap-2">
-                    <span className="bg-secondary-container/40 text-secondary border border-secondary/30 px-2 py-0.5 rounded-md text-[11px] font-extrabold flex items-center gap-1">
-                      <span className="material-symbols-outlined text-xs">stars</span> +{mission.xp} Karma
+                <div className="flex items-center justify-between pt-3 border-t border-outline-variant/20 mt-3">
+                  {/* Karma & Difficulty Badges */}
+                  <div className="flex items-center gap-1.5">
+                    <span className="bg-gradient-to-r from-emerald-500/15 via-teal-500/10 to-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 px-2.5 py-1 rounded-full text-[11px] font-extrabold flex items-center gap-1 shadow-xs">
+                      <span className="material-symbols-outlined text-xs text-emerald-500">stars</span>
+                      <span>+{mission.xp} Karma</span>
                     </span>
-                    <span className="bg-surface-container-high text-on-surface-variant px-2 py-0.5 rounded-md text-[11px] font-semibold">
+
+                    <span
+                      className={`px-2.5 py-1 rounded-full text-[11px] font-bold border flex items-center gap-1 ${
+                        mission.difficulty === 'Easy'
+                          ? 'bg-emerald-50 text-emerald-700 border-emerald-200/80 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-800/40'
+                          : mission.difficulty === 'Medium'
+                          ? 'bg-amber-50 text-amber-700 border-amber-200/80 dark:bg-amber-950/40 dark:text-amber-300 dark:border-amber-800/40'
+                          : 'bg-rose-50 text-rose-700 border-rose-200/80 dark:bg-rose-950/40 dark:text-rose-300 dark:border-rose-800/40'
+                      }`}
+                    >
+                      <span className="w-1.5 h-1.5 rounded-full fill-current bg-current" />
                       {mission.difficulty}
                     </span>
                   </div>
 
-                  <Button
-                    variant={isCompleted ? 'outline' : 'primary'}
-                    size="sm"
-                    onClick={() => handleOpenMissionDetail(mission)}
-                    className="font-bold text-xs"
-                  >
-                    {isCompleted ? 'View Proof' : 'View Details'}
-                  </Button>
+                  {/* Magnetic Action Button */}
+                  <Magnetic intensity={0.25} range={140}>
+                    <button
+                      type="button"
+                      onClick={() => handleOpenMissionDetail(mission)}
+                      className={`group relative inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl text-xs font-extrabold transition-all duration-300 shadow-sm cursor-pointer overflow-hidden ${
+                        isCompleted
+                          ? 'border border-emerald-600/30 bg-emerald-50/90 text-emerald-700 hover:bg-emerald-100 hover:border-emerald-600/50 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-500/40 dark:hover:bg-emerald-900/50 shadow-emerald-500/10'
+                          : 'bg-gradient-to-r from-blue-600 via-blue-600 to-indigo-600 text-white hover:from-blue-500 hover:to-indigo-500 shadow-md shadow-blue-500/25 hover:shadow-lg hover:shadow-blue-500/40 hover:-translate-y-0.5 active:translate-y-0'
+                      }`}
+                    >
+                      <Magnetic intensity={0.12} range={140}>
+                        <span className="flex items-center gap-1.5">
+                          {isCompleted ? (
+                            <>
+                              <span className="material-symbols-outlined text-sm">visibility</span>
+                              <span>View Proof</span>
+                            </>
+                          ) : (
+                            <>
+                              <span>View Details</span>
+                              <span className="material-symbols-outlined text-sm transition-transform duration-200 group-hover:translate-x-0.5">
+                                arrow_forward
+                              </span>
+                            </>
+                          )}
+                        </span>
+                      </Magnetic>
+                    </button>
+                  </Magnetic>
                 </div>
               </div>
             </Card>
